@@ -1,20 +1,20 @@
 package com.smc.journalApp.service;
 
-import com.smc.journalApp.entity.Users;
+import com.smc.journalApp.entity.User;
 import com.smc.journalApp.repository.JournalEntryRepository;
 import com.smc.journalApp.entity.JournalEntry;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-@Component
+@Service
 @Slf4j
 public class JournalEntryService {
 
@@ -28,7 +28,7 @@ public class JournalEntryService {
     public void saveJournals(JournalEntry journalEntry, String username){
 
         try {
-            Users user = userService.findByusername(username);
+            User user = userService.findByusername(username);
             journalEntry.setDate(LocalDateTime.now());
             JournalEntry savedJournals = journalEntryRepository.save(journalEntry);
             user.getJournalEntries().add(savedJournals);
@@ -69,7 +69,7 @@ public class JournalEntryService {
 
         boolean removed = false;
         try {
-            Users user = userService.findByusername(username);
+            User user = userService.findByusername(username);
             removed = user.getJournalEntries().removeIf(x -> x.getId().equals(id));
 
             if(removed){

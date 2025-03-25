@@ -1,6 +1,6 @@
 package com.smc.journalApp.service;
 
-import com.smc.journalApp.entity.Users;
+import com.smc.journalApp.entity.User;
 import com.smc.journalApp.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
 @Slf4j
 public class UserService {
 
@@ -24,7 +24,7 @@ public class UserService {
     private static final PasswordEncoder pwdEncoder = new BCryptPasswordEncoder();
 
 
-    public void saveUser(Users user){
+    public void saveUser(User user){
 
         try {
             userRepository.save(user);
@@ -35,7 +35,7 @@ public class UserService {
 
     }
 
-    public void saveNewUser(Users user){
+    public void saveNewUser(User user){
 
         try {
             user.setPassword(pwdEncoder.encode(user.getPassword()));
@@ -48,17 +48,17 @@ public class UserService {
 
     }
 
-    public void saveAdmin(Users user){
+    public void saveAdmin(User user){
         user.setPassword(pwdEncoder.encode(user.getPassword()));
         user.setRoles(Arrays.asList("USER","ADMIN"));
         userRepository.save(user);
     }
 
-    public List<Users> getAll(){
+    public List<User> getAll(){
         return userRepository.findAll();
     }
 
-    public Optional<Users> getJournalById(ObjectId id){
+    public Optional<User> getJournalById(ObjectId id){
         //Optional is a class which might contains data or not
         return userRepository.findById(id);
     }
@@ -67,7 +67,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public Users findByusername(String username){
+    public User findByusername(String username){
         return userRepository.findByusername(username);
     }
 

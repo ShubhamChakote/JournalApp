@@ -1,7 +1,7 @@
 package com.smc.journalApp.controller;
 
 import com.smc.journalApp.entity.JournalEntry;
-import com.smc.journalApp.entity.Users;
+import com.smc.journalApp.entity.User;
 import com.smc.journalApp.service.JournalEntryService;
 import com.smc.journalApp.service.UserService;
 import org.bson.types.ObjectId;
@@ -34,7 +34,7 @@ public class JournalControllerV2 {
 
         String username = authentication.getName();
 
-        Users user = userService.findByusername(username);
+        User user = userService.findByusername(username);
 
         List<JournalEntry> journalEntries = user.getJournalEntries();
 
@@ -67,7 +67,7 @@ public class JournalControllerV2 {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        Users user = userService.findByusername(username);
+        User user = userService.findByusername(username);
 
         List<JournalEntry> collect = user.getJournalEntries().stream().filter(x->x.getId().equals(id)).collect(Collectors.toList());
 
@@ -106,7 +106,7 @@ public class JournalControllerV2 {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        Users user = userService.findByusername(username);
+        User user = userService.findByusername(username);
 
         List<JournalEntry> collect = user.getJournalEntries().stream().filter(x->x.getId().equals(id)).collect(Collectors.toList());
 
