@@ -30,7 +30,9 @@ public class User {
 
     private List<String> roles;
 
+    private String email;
 
+    private boolean sentimentAnalysis;
 
 
 }

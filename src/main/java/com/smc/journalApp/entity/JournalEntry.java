@@ -1,6 +1,7 @@
 package com.smc.journalApp.entity;
 
 
+import com.smc.journalApp.enums.Sentiment;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.types.ObjectId;
@@ -23,7 +24,7 @@ public class JournalEntry {
 
     private LocalDateTime date;
 
-
+    private Sentiment sentiment;
 
 
 

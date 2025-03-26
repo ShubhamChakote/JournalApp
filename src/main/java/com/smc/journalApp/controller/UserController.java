@@ -2,6 +2,8 @@ package com.smc.journalApp.controller;
 
 import com.smc.journalApp.api.response.WeatherResponse;
 import com.smc.journalApp.entity.User;
+import com.smc.journalApp.scheduler.UserScheduler;
+import com.smc.journalApp.service.EmailService;
 import com.smc.journalApp.service.UserService;
 import com.smc.journalApp.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class UserController {
 
     @Autowired
         private WeatherService weatherService;
+
+    @Autowired
+    private UserScheduler userScheduler;
 
 
     @PutMapping
@@ -64,6 +69,14 @@ public class UserController {
 
         return new ResponseEntity<>("Hi "+authentication.getName() + greeting,HttpStatus.OK);
     }
+
+    @PostMapping("/sendMail")
+    public void sendEmail(){
+
+        userScheduler.fetchUsersAndSendSAMail();
+
+    }
+
 
 
 }
