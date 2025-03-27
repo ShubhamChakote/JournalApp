@@ -19,6 +19,9 @@ public class WeatherService {
     @Autowired
     private AppCache appCache;
 
+    @Autowired
+    private RedisService redisService;
+
     @Value("${weather.api.key}") //@Value used to fetch the values written in properties file
     private String apikey;
 
@@ -37,14 +40,30 @@ public class WeatherService {
 
     public WeatherResponse getWeather(String city){
 
-        String finalApi = appCache.appCache.get(AppCache.keys.WEATHER_API.toString()).replace(Placeholders.CITY,city).replace(Placeholders.API_KEY,apikey);
-        ResponseEntity<WeatherResponse> response = restTemplate.exchange(finalApi, HttpMethod.GET, null, WeatherResponse.class);
+        WeatherResponse weatherResponse = redisService.get("weather_of_"+city, WeatherResponse.class);
 
-        //Use below for post call to external api
-        // ResponseEntity<WeatherResponse> response = restTemplate.exchange(finalApi, HttpMethod.POST, null, WeatherResponse.class);
+        if (weatherResponse!=null){
+            System.out.println("got from redis");
+            return weatherResponse;
+        }
+        else{
+            String finalApi = appCache.appCache.get(AppCache.keys.WEATHER_API.toString()).replace(Placeholders.CITY,city).replace(Placeholders.API_KEY,apikey);
+            ResponseEntity<WeatherResponse> response = restTemplate.exchange(finalApi, HttpMethod.GET, null, WeatherResponse.class);
+            WeatherResponse body = response.getBody();
+            //Use below for post call to external api
+            // ResponseEntity<WeatherResponse> response = restTemplate.exchange(finalApi, HttpMethod.POST, null, WeatherResponse.class);
+
+            if (body!=null){
+                redisService.set("weather_of_"+city,body, 300L);
+            }
+            System.out.println("got from api");
+            return response.getBody();
+
+        }
 
 
-        return response.getBody();
+
+
 
     }
 
