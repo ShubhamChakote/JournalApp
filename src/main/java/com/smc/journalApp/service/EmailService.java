@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -12,8 +11,9 @@ import org.springframework.stereotype.Service;
 public class EmailService {
 
     @Autowired
-    // JavaMailSender is interface use to send mails
+//    // JavaMailSender is interface use to send mails
     private JavaMailSender javaMailSender;
+
 
     public void sendMail(String to, String subject, String body){
 
