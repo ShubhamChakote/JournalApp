@@ -26,7 +26,8 @@ weather:
   api:
     key: ${API_KEY}
 server:
-  port: ${SERVER_PORT}
+  port: ${PORT:8081}
+
 
 springdoc:
   swagger-ui:
