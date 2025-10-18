@@ -1,5 +1,6 @@
 package com.smc.journalApp.config;
 
+import com.smc.journalApp.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,15 +16,17 @@ import org.springframework.security.web.*;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.*;
 
-import com.smc.journalApp.service.UserDetailsServiceImpl;
-
 import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 public class SpringSecurity {
-    @Autowired private UserDetailsServiceImpl userDetailsService;
-    @Autowired private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -32,6 +35,7 @@ public class SpringSecurity {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // Public endpoints including Swagger UI and root
                         .requestMatchers(
                                 "/",
                                 "/public/**",

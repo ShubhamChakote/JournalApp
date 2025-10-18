@@ -30,13 +30,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
 
-        // Skip JWT check for public endpoints
         String path = request.getRequestURI();
+
+        // Skip JWT validation for public endpoints
         if (path.equals("/") ||
                 path.startsWith("/swagger-ui") ||
                 path.startsWith("/v3/api-docs") ||
                 path.startsWith("/public")) {
-            chain.doFilter(request, response); // skip JWT
+            chain.doFilter(request, response);
             return;
         }
 
@@ -49,7 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 username = jwtUtil.extractUsername(token);
             } catch (Exception e) {
-                // Invalid token
+                // Invalid token, continue without authentication
             }
         }
 
