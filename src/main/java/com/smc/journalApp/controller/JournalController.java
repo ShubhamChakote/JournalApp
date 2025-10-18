@@ -1,6 +1,7 @@
 package com.smc.journalApp.controller;
 
 import com.smc.journalApp.entity.JournalEntry;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/_journal")
+@Hidden
 public class JournalController {
 
     Map<ObjectId,JournalEntry> journalEntries = new HashMap<>();

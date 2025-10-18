@@ -1,6 +1,7 @@
 package com.smc.journalApp.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.smc.journalApp.enums.Sentiment;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +10,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Document(collection = "journal_entries")
 @Getter
 @Setter

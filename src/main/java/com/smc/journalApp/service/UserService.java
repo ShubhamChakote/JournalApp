@@ -5,6 +5,8 @@ import com.smc.journalApp.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -23,7 +25,7 @@ public class UserService {
 
     private static final PasswordEncoder pwdEncoder = new BCryptPasswordEncoder();
 
-
+    @CacheEvict(value = "users", key = "#user.username")
     public void saveUser(User user){
 
         try {
@@ -67,7 +69,9 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    @Cacheable(value = "users", key = "#username")
     public User findByusername(String username){
+        System.out.println("Fetching user details from DATABASE for username: " + username);
         return userRepository.findByusername(username);
     }
 

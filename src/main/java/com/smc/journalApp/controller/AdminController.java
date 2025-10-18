@@ -3,6 +3,9 @@ package com.smc.journalApp.controller;
 
 import com.smc.journalApp.entity.User;
 import com.smc.journalApp.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +15,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
+@Tag(name = "Admin APIs")
 public class AdminController {
 
     @Autowired
     private UserService userService;
 
+    @Operation(summary = "Admin api for getting information of all users")
     @GetMapping("/all-users")
     public ResponseEntity<?> getAllUsers(){
         List<User> allUsers = userService.getAll();
@@ -29,7 +34,9 @@ public class AdminController {
 
     }
 
+
     @PostMapping("/add-admin")
+    @Operation(summary = "Api for creating new admin user")
     public ResponseEntity<?> createNewAdmin(@RequestBody User user){
         userService.saveAdmin(user);
         return new ResponseEntity<>(HttpStatus.OK);

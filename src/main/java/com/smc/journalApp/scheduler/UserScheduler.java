@@ -6,6 +6,8 @@ import com.smc.journalApp.enums.Sentiment;
 import com.smc.journalApp.repository.UserRepositoryImpl;
 import com.smc.journalApp.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -28,52 +30,77 @@ public class UserScheduler {
     private EmailService emailService;
 
     @Scheduled(cron = "0 0 9 * * SUN")
+    //@Scheduled(cron = "0 * * * * *")  // every minute
     public void fetchUsersAndSendSAMail(){
 
         List<User> userForSA = userRepository.getUserForSA();
 
-        for (User user : userForSA) {
+        try {
 
-            List<JournalEntry> journalEntries = user.getJournalEntries();
+            for (User user : userForSA) {
 
-            //below we have taken sentiment of journal entries from last 7 days
-            List<Sentiment> sentiments = journalEntries.stream().filter(x -> x.getDate().isAfter(LocalDateTime.now().minus(7, ChronoUnit.DAYS))).map(x->x.getSentiment()).collect(Collectors.toList());
 
-            Map<Sentiment,Integer> setimentCount = new HashMap<>();
+                List<JournalEntry> journalEntries = user.getJournalEntries();
 
-            for (Sentiment sentiment : sentiments) {
+                //below we have taken sentiment of journal entries from last 7 days
+                List<Sentiment> sentiments = journalEntries.stream().filter(x -> x.getDate().isAfter(LocalDateTime.now().minus(7, ChronoUnit.DAYS))).map(x -> x.getSentiment()).collect(Collectors.toList());
 
-                if (sentiment != null) {
-                    setimentCount.put(sentiment, setimentCount.getOrDefault(sentiment, 0) + 1);
+                Map<Sentiment, Integer> setimentCount = new HashMap<>();
+
+                for (Sentiment sentiment : sentiments) {
+
+                    if (sentiment != null) {
+                        setimentCount.put(sentiment, setimentCount.getOrDefault(sentiment, 0) + 1);
+                    }
                 }
-            }
 
                 Sentiment mostFrequentSentiment = null;
                 int maxCount = 0;
-                for (Map.Entry<Sentiment,Integer> entry :setimentCount.entrySet()){
+                for (Map.Entry<Sentiment, Integer> entry : setimentCount.entrySet()) {
 
-                    if(entry.getValue() > maxCount){
+                    if (entry.getValue() > maxCount) {
                         maxCount = entry.getValue();
                         mostFrequentSentiment = entry.getKey();
                     }
 
                 }
-
-                if (mostFrequentSentiment != null){
-                    emailService.sendMail(user.getEmail(),"Sentiment Analysis of last 7 days",mostFrequentSentiment.toString());
+                System.out.println(mostFrequentSentiment);
+                if (mostFrequentSentiment != null) {
+                    emailService.sendMail(user.getEmail(), "Sentiment Analysis of last 7 days", mostFrequentSentiment.toString());
+                }
+                else {
+                    emailService.sendMail(user.getEmail(),"Sentiment Analysis of last 7 days","there are no journal entries for last 7 days");
                 }
 
+            }
 
 
-
-
-
-
-
-
+        }
+        catch (Exception e){
+            System.out.println("Got some error while sending the mails "+ e);
         }
 
 
     }
 
+    public void testMail() {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+        mailSender.setUsername("shubhamchakote007@gmail.com");
+        mailSender.setPassword("sitl tazb xyvt xymk");
+        mailSender.getJavaMailProperties().put("mail.smtp.auth", "true");
+        mailSender.getJavaMailProperties().put("mail.smtp.starttls.enable", "true");
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("shubhamchakote007@gmail.com");
+        message.setTo("shubhamchakote001@gmail.com");
+        message.setSubject("Test mail");
+        message.setText("This is a test.");
+
+        mailSender.send(message);
+    }
+
 }
+
+

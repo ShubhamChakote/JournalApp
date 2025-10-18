@@ -22,11 +22,13 @@ public class EmailService {
             SimpleMailMessage is a class in  java used
             to specify or set the content of mail
              */
+            System.out.println("before mail");
             SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
             simpleMailMessage.setTo(to);
             simpleMailMessage.setSubject(subject);
             simpleMailMessage.setText(body);
             javaMailSender.send(simpleMailMessage);
+            System.out.println("after mail");
 
         }
         catch (Exception e){

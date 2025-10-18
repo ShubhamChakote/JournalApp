@@ -6,6 +6,8 @@ import com.smc.journalApp.entity.JournalEntry;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +26,15 @@ public class JournalEntryService {
     @Autowired
     private UserService userService;
 
+    @Cacheable(value = "journalEntries", key = "#username")
+    public List<JournalEntry> getJournalEntriesForUser(String username) {
+        System.out.println("Fetching journal entries from DATABASE for user: " + username);
+        User user = userService.findByusername(username);
+        return user.getJournalEntries();
+    }
+
     @Transactional
+    @CacheEvict(value = "journalEntries", key = "#username")
     public void saveJournals(JournalEntry journalEntry, String username){
 
         try {
@@ -65,6 +75,7 @@ public class JournalEntryService {
     }
 
     @Transactional
+    @CacheEvict(value = "journalEntries", key = "#username")
     public boolean deletById(ObjectId id, String username){
 
         boolean removed = false;
