@@ -24,8 +24,8 @@ public class SwaggerConfig {
                         .description("By Shubham Chakote"))
                 .servers(
                         List.of(
-                                new Server().url("http://localhost:8081/").description("local server"),
-                                new Server().url("https://springboot-journalapp-b0180e82173b.herokuapp.com/").description("live server")
+                                new Server().url("https://springboot-journalapp-b0180e82173b.herokuapp.com/").description("live server"),
+                                new Server().url("http://localhost:8081/").description("local server")
                         )
                 )
 
