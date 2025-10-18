@@ -22,8 +22,13 @@ public class SwaggerConfig {
                         new Info()
                         .title("Journal Application APIs")
                         .description("By Shubham Chakote"))
-                .servers(List.of(new Server().url("http://localhost:8081/")
-                        .description("local server")))
+                .servers(
+                        List.of(
+                                new Server().url("http://localhost:8081/").description("local server"),
+                                new Server().url("https://springboot-journalapp-b0180e82173b.herokuapp.com/").description("live server")
+                        )
+                )
+
                 .tags(List.of(new Tag().name("Public APIs")))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(new Components().addSecuritySchemes(

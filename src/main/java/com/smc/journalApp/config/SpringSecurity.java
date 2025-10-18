@@ -32,7 +32,7 @@ public class SpringSecurity {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/public/**" ,
+                        .requestMatchers("/","/public/**" ,
                                 "/v3/api-docs/**" ,
                                 "/swagger-ui/**",
                                 "/swagger-ui.html").permitAll()
