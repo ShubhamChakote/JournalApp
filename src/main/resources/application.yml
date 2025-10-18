@@ -8,11 +8,11 @@ spring:
       auto-index-creation: true
     redis:
       host: ${REDIS_HOST}
-      port: 16184
+      port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
   mail:
-    host: smtp.gmail.com
-    port: 587
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
     username: ${EMAIL}
     password: ${EMAIL_PASSWORD}
     properties:
