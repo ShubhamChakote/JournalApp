@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 path.startsWith("/swagger-ui") ||
                 path.startsWith("/v3/api-docs") ||
                 path.startsWith("/public")) {
-            chain.doFilter(request, response);
+            chain.doFilter(request, response); // skip JWT
             return;
         }
 
