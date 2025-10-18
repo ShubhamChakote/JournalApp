@@ -83,24 +83,6 @@ public class UserScheduler {
 
     }
 
-    public void testMail() {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(587);
-        mailSender.setUsername("shubhamchakote007@gmail.com");
-        mailSender.setPassword("sitl tazb xyvt xymk");
-        mailSender.getJavaMailProperties().put("mail.smtp.auth", "true");
-        mailSender.getJavaMailProperties().put("mail.smtp.starttls.enable", "true");
-
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("shubhamchakote007@gmail.com");
-        message.setTo("shubhamchakote001@gmail.com");
-        message.setSubject("Test mail");
-        message.setText("This is a test.");
-
-        mailSender.send(message);
-    }
-
 }
 
 
