@@ -1,5 +1,5 @@
 # Stage 1: Build the JAR using Maven + JDK 17
-FROM maven:3.9.2-openjdk-17 AS build
+FROM maven:3.9.2-eclipse-temurin-17 AS build
 WORKDIR /app
 
 # Copy Maven config and source code
@@ -10,7 +10,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Stage 2: Use a smaller JDK image to run the app
-FROM openjdk:17-slim
+FROM eclipse-temurin:17-jdk-focal
 WORKDIR /app
 
 # Copy the built JAR from the previous stage
