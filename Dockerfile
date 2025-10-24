@@ -1,5 +1,5 @@
 # Stage 1: Build the JAR using Maven + JDK
-FROM maven:3.9.2-eclipse-temurin-21 AS build
+FROM maven:3.9.2-jdk-21 AS build
 WORKDIR /app
 
 # Copy Maven config and source code
@@ -16,7 +16,7 @@ WORKDIR /app
 # Copy the built JAR from the previous stage
 COPY --from=build /app/target/journalApp-0.0.1-SNAPSHOT.jar journalapp.jar
 
-# Expose the app port (can be overridden by SERVER_PORT env)
+# Expose the app port
 EXPOSE 8081
 
 # Run the Spring Boot app
