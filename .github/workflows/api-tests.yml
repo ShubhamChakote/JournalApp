@@ -1,0 +1,38 @@
+name: Journal App API Automation
+
+on:
+  schedule:
+    - cron: '0 10 * * 0'   # Every Sunday at 10 AM UTC
+  workflow_dispatch:       # Manual trigger button
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Run API Tests (@journal)
+        run: mvn clean test -Dcucumber.filter.tags="@basicflow"
+
+      - name: Upload Extent Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Extent-Report
+          path: target/extent-report
