@@ -1,9 +1,13 @@
 package com.smc.journalApp;
 
-import org.junit.jupiter.api.Disabled;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.Ignore;
+import org.junit.Test;
 
-@Disabled("Disabled for API automation – application runs externally")
-@SpringBootTest
-class JournalAppApplicationTests {
+@Ignore("Disabled for API automation")
+public class JournalAppApplicationTests {
+
+    @Test
+    public void contextLoads() {
+        // intentionally empty
+    }
 }
