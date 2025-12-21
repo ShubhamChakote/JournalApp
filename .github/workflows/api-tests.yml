@@ -27,7 +27,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Run API Tests (@journal)
+      - name: Run API Tests (@basicflow)
         run: mvn clean test -Dcucumber.filter.tags="@basicflow"
 
       - name: Upload Extent Report
