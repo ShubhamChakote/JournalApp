@@ -26,7 +26,7 @@ public class RedisService {
 
         }
         catch (Exception e){
-            log.error("Exception occurred while getting value from redis");
+            log.error("Exception occurred while getting value from redis{}", String.valueOf(e));
             return null;
         }
 

@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["id", "title", "date"],
+  "properties": {
+    "id": {
+      "type": "object",
+      "required": ["timestamp", "date"],
+      "properties": {
+        "timestamp": {
+          "type": "integer"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": ["string", "null"]
+    },
+    "date": {
+      "type": "string"
+    },
+    "sentiment": {
+      "type": ["string", "null"]
+    }
+  },
+  "additionalProperties": false
+}
+
